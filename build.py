@@ -90,6 +90,9 @@ def pagina(archivo, titulo, descripcion, cuerpo, accion=None):
         "marca": MARCA_HTML, "wa": wa(), "tel": TELEFONO, "barra": barra,
         "pie_cx": "".join('<a href="%s.html">%s</a>' % (c["slug"], c["nombre"]) for c in CIRUGIAS),
     }
+    # Direcciones limpias: los enlaces internos salen sin "index.html" ni ".html"
+    html = re.sub(r'href="index\.html([?#][^"]*)?"', lambda m: 'href="./%s"' % (m.group(1) or ""), html)
+    html = re.sub(r'href="([a-z0-9-]+)\.html([?#][^"]*)?"', lambda m: 'href="%s%s"' % (m.group(1), m.group(2) or ""), html)
     with open(os.path.join(AQUI, archivo), "w", encoding="utf-8") as f:
         f.write(html)
     print("✓", archivo)

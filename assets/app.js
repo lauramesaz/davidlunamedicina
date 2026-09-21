@@ -1,3 +1,8 @@
+// Direcciones limpias: si alguien entra por un link viejo con .html, se limpia la barra
+if (/^https?:$/.test(location.protocol) && /\.html$/.test(location.pathname)) {
+  history.replaceState(null, '', location.pathname.replace(/(^|\/)index\.html$/, '$1').replace(/\.html$/, '') + location.search + location.hash);
+}
+
 // Menú móvil
 const hamb = document.querySelector('.hamb');
 const nav = document.querySelector('.nav');
@@ -74,7 +79,7 @@ if (sel) {
     caja.querySelector('.nom').textContent = d.nombre;
     caja.querySelector('p').textContent = d.por;
     caja.querySelector('.valor').textContent = d.precio;
-    caja.querySelector('a').href = d.slug + '.html';
+    caja.querySelector('a').href = d.slug;
     const tl = caja.querySelector('.trae-linea');
     if (tl) tl.innerHTML = d.trae.map((x) => '<span>' + x + '</span>').join('') + '<span class="n">+ ' + d.mas + ' más</span>';
   };

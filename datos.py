@@ -8,7 +8,10 @@ TELEFONO = "+57 321 7591330"
 MARCA = "Cirugía Todo Incluido"  # nombre provisional del sitio (sin marca). Cámbialo aquí.
 SEDE_QX = "Q2"
 VALORACION = "$200.000"
-RETENCION = "20%"
+# Política de devoluciones (se usa en términos, pagos y preguntas). Cambia aquí.
+RETENCION = "20%"                       # se retiene del valor abonado por gastos administrativos
+FECHA_LIMITE = "15 de enero de 2027"    # la cirugía debe realizarse antes de esta fecha
+TERMINOS_FECHA = "21 de septiembre de 2026"
 
 # Qué significa cada cosa incluida (se usa en "Todo incluido" y en cada cirugía)
 INCLUIDOS = {
@@ -221,8 +224,9 @@ FAQ = [
 
     ("Pagos", "¿Cómo separo mi fecha de cirugía?", "Después de la valoración, reservas tu fecha con un abono. El saldo se paga antes de la cirugía.", []),
     ("Pagos", "Si me arrepiento, ¿me devuelven el abono?", "Sí se devuelve, con una retención del " + RETENCION + " del valor abonado por gastos administrativos. El valor de la cita de valoración no se devuelve. El detalle está en los términos y condiciones.", []),
+    ("Pagos", "¿Hasta cuándo tengo para operarme?", "Tu cirugía debe realizarse antes del " + FECHA_LIMITE + ". Si para esa fecha no te has operado, se aplica la política de devoluciones: se devuelve lo abonado con una retención del " + RETENCION + ".", []),
     ("Pagos", "¿Qué medios de pago reciben?", "Escríbenos por WhatsApp y te contamos los medios de pago disponibles hoy.", []),
-    ("Pagos", "¿Puedo cambiar la fecha de mi cirugía?", "Sí, avisando con anticipación y según la disponibilidad de quirófano. Revisa las condiciones en los términos.", []),
+    ("Pagos", "¿Puedo cambiar la fecha de mi cirugía?", "Sí, avisando con anticipación y según la disponibilidad de quirófano, siempre que la nueva fecha sea antes del " + FECHA_LIMITE + ".", []),
 
     ("Vengo de lejos", "No vivo en la ciudad, ¿puedo operarme con ustedes?", "Sí. Atendemos pacientes de otras ciudades y del exterior. Te ayudamos a organizar tus fechas para que valoración, cirugía y controles te queden en un solo viaje.", []),
     ("Vengo de lejos", "¿Cuántos días debo quedarme después de la cirugía?", "Como guía, entre una y dos semanas para cirugías de seno y entre dos y tres para lipo. El tiempo exacto lo define tu cirujano en los controles.", []),
@@ -231,40 +235,101 @@ FAQ = [
 ]
 CATS = ["Precio", "Seguridad", "Dolor y recuperación", "Implantes", "Requisitos", "Pagos", "Vengo de lejos"]
 
+# Resumen que se muestra arriba de los términos y en los avisos del sitio
+RESUMEN_TC = [
+    "La cita de valoración (" + VALORACION + ") no se devuelve ni se abona a la cirugía.",
+    "Si abonas y luego decides no operarte, se te devuelve lo abonado con una <strong>retención del " + RETENCION + "</strong> por gastos administrativos.",
+    "Tu cirugía debe realizarse <strong>antes del " + FECHA_LIMITE + "</strong>.",
+]
+
+# Cada sección: (título, contenido, destacada). En el contenido, un texto es un párrafo y una lista [] son viñetas.
 TERMINOS = [
-    ("1. Sobre este sitio", [
+    ("1. Sobre este sitio y aceptación de estos términos", [
         "Este sitio presenta nuestras promociones de cirugía plástica. La información tiene fines informativos y no reemplaza una consulta médica. Ninguna cirugía se programa sin una cita de valoración previa.",
-    ]),
+        "Al agendar o pagar tu cita de valoración, o al hacer cualquier abono o pago de una cirugía, <strong>declaras que leíste, entendiste y aceptas estos términos y condiciones completos</strong>, incluida la política de devoluciones del punto 4.",
+        "Si no estás de acuerdo con alguno de estos términos, por favor no realices ningún pago y escríbenos primero para resolver tus dudas.",
+    ], False),
     ("2. Cita de valoración", [
-        "Todo tratamiento inicia con una cita de valoración con nuestros cirujanos, con un costo de <strong>" + VALORACION + "</strong>.",
-        "El valor de la cita de valoración <strong>no es abonable</strong> al valor de la cirugía ni de ningún tratamiento.",
-        "El valor de la cita de valoración <strong>no se devuelve</strong> en ningún caso, incluso si después de la consulta decides no operarte o si nuestros cirujanos determinan que no eres candidata a la cirugía.",
-    ]),
-    ("3. Abonos y reserva de fecha", [
-        "La fecha de cirugía se reserva con un abono. El saldo debe estar pago antes de la cirugía.",
-        "Si después de abonar decides no realizarte la cirugía y solicitas la devolución, se hará una <strong>retención del " + RETENCION + " del valor abonado por concepto de gastos administrativos</strong>. El valor restante se te devuelve.",
-    ]),
-    ("4. Precios de las promociones", [
+        "Todo tratamiento inicia con una cita de valoración con nuestros cirujanos, con un costo de <strong>" + VALORACION + "</strong>, que se paga para reservar la cita.",
+        "El valor de la cita de valoración <strong>no es abonable</strong>: no se descuenta del valor de la cirugía ni de ningún otro tratamiento.",
+        "El valor de la cita de valoración <strong>no se devuelve en ningún caso</strong>. Esto incluye, entre otros, cuando:",
+        [
+            "Después de la consulta decides no operarte, por cualquier motivo.",
+            "Nuestros cirujanos determinan que no eres candidata a la cirugía, o te recomiendan un procedimiento distinto al que esperabas.",
+            "No asistes a la cita, o llegas tarde y ya no es posible atenderte.",
+            "Decides operarte en otro lugar o con otro profesional.",
+        ],
+        "Lo que pagas es el tiempo profesional de la consulta médica: el examen, el concepto de nuestros cirujanos y la orden de exámenes. Ese servicio se presta completo en la cita, sin importar la decisión que tomes después.",
+    ], False),
+    ("3. Abonos y pagos de la cirugía", [
+        "La fecha de cirugía se reserva con un abono. El saldo debe estar pago en la fecha que te indiquemos al reservar y, en todo caso, antes de la cirugía. Sin el pago completo no se realiza la cirugía.",
+        "Con tu abono reservamos a tu nombre el quirófano en " + SEDE_QX + ", el equipo quirúrgico, la póliza y, cuando aplica, los implantes e insumos de tu cirugía. Son gestiones y compromisos que adquirimos desde el momento en que abonas; <strong>por eso, si desistes, se retiene el " + RETENCION + " de lo abonado</strong> (ver punto 4).",
+        "El precio de tu promoción se respeta desde que abonas, siempre que tu cirugía se realice antes del " + FECHA_LIMITE + ".",
+        "Guarda siempre tu comprobante de pago. Solo son válidos los pagos hechos por los medios que te confirmemos directamente por nuestros canales oficiales.",
+    ], False),
+    ("4. Política de devoluciones", [
+        "<strong>4.1. Cita de valoración.</strong> El valor de la cita de valoración (" + VALORACION + ") no se devuelve en ningún caso, como se explica en el punto 2.",
+        "<strong>4.2. Abonos y pagos de la cirugía: devolución con retención del " + RETENCION + ".</strong> Si después de abonar o pagar decides no realizarte la cirugía y solicitas la devolución, <strong>se te devuelve el dinero con una retención del " + RETENCION + " del valor abonado, por concepto de gastos administrativos</strong>. El valor restante se te devuelve.",
+        "La retención del " + RETENCION + " aplica sin importar el motivo por el que no te operes. Entre otros, cuando:",
+        [
+            "Te arrepientes, cambias de opinión o decides no operarte.",
+            "Tienes motivos personales, familiares, laborales, económicos, de estudio o de viaje que te impiden operarte.",
+            "Encuentras otro precio, otra promoción, otro cirujano u otro lugar para operarte.",
+            "No te presentas el día de la cirugía, o llegas tarde y ya no es posible realizarla.",
+            "No completas el pago del saldo en la fecha acordada.",
+            "No cumples las indicaciones previas a la cirugía (exámenes a tiempo, ayuno, suspender el cigarrillo o los medicamentos indicados, asistir con acompañante) y por esa razón no es posible operarte.",
+            "Ocultaste o no informaste datos de tu salud, y por esa razón la cirugía no se puede realizar.",
+            "Un banco o una entidad de financiación no te aprueba un crédito con el que pensabas pagar el saldo.",
+            "No te realizas la cirugía antes de la fecha límite del punto 4.3.",
+        ],
+        "La retención se calcula sobre todo lo que hayas abonado o pagado por la cirugía hasta el momento en que solicitas la devolución.",
+        "<strong>4.3. Fecha límite para operarte: " + FECHA_LIMITE + ".</strong> Las cirugías de estas promociones deben realizarse <strong>antes del " + FECHA_LIMITE + "</strong>. Si para esa fecha no te has operado, se aplica esta política: se te devuelve lo abonado con la retención del " + RETENCION + ".",
+        "<strong>4.4. Lo que no da lugar a devolución.</strong> Una vez realizada la cirugía no hay devoluciones de dinero. En particular, no hay devolución cuando:",
+        [
+            "No quedas conforme con el resultado estético. Los resultados dependen de cada cuerpo, de la cicatrización y de los cuidados de cada paciente, y no se pueden garantizar (ver punto 8).",
+            "Decides no usar algo que tu promoción incluye (por ejemplo masajes, prenda o controles). Lo que no uses no se devuelve ni se descuenta.",
+            "El precio de la promoción baja o cambia después de que abonaste. No se devuelven diferencias de precio.",
+        ],
+        "<strong>4.5. Cómo pedir la devolución.</strong> La solicitas por escrito, por nuestro WhatsApp, indicando tu nombre completo y adjuntando tu comprobante de pago. La devolución se hace únicamente al titular del pago.",
+        "<strong>4.6. Tus derechos como consumidor.</strong> Nada de lo escrito aquí limita los derechos que la ley colombiana le reconoce a los consumidores (Ley 1480 de 2011, Estatuto del Consumidor).",
+    ], True),
+    ("5. Reprogramación de la cirugía", [
+        "Puedes solicitar el cambio de tu fecha de cirugía avisando con anticipación, por escrito, por nuestro WhatsApp. La nueva fecha depende de la disponibilidad de quirófano y del equipo quirúrgico, y <strong>debe ser antes del " + FECHA_LIMITE + "</strong>.",
+        "Nosotros también podemos reprogramar tu cirugía por razones médicas, de disponibilidad del quirófano o del equipo, o por fuerza mayor. En ese caso te asignamos una nueva fecha sin ningún costo.",
+        "En ninguna reprogramación, tuya o nuestra, asumimos gastos de tiquetes, hospedaje, transporte, incapacidades o ingresos que dejes de recibir.",
+    ], False),
+    ("6. Precios de las promociones", [
         "Los precios publicados corresponden al procedimiento descrito en cada promoción, con lo que se indica como incluido.",
         "No incluyen la cita de valoración, los exámenes prequirúrgicos, los medicamentos de la recuperación, procedimientos adicionales ni gastos de viaje u hospedaje.",
         "Si en la valoración se define un procedimiento distinto o adicional al de la promoción, se te entregará una cotización antes de que tomes cualquier decisión.",
-        "Las promociones tienen cupos y vigencia limitada, y pueden modificarse o terminarse sin previo aviso. Se respeta el precio a quienes ya hayan abonado.",
-    ]),
-    ("5. Condiciones médicas", [
+        "Las promociones aplican para cirugías realizadas antes del " + FECHA_LIMITE + ", no son acumulables entre sí ni con otros descuentos, y pueden modificarse o terminarse sin previo aviso. Se respeta el precio a quienes ya hayan abonado.",
+    ], False),
+    ("7. Condiciones médicas", [
         "La cirugía solo se realiza si nuestros cirujanos te consideran candidata y si tus exámenes prequirúrgicos lo permiten. El equipo médico puede aplazar o no realizar una cirugía cuando no sea segura para ti.",
+        "Es tu responsabilidad informar con verdad y de forma completa tu estado de salud, tus enfermedades, cirugías previas, alergias, medicamentos y hábitos (como fumar o vapear).",
         "Todas las cirugías se realizan en las salas de cirugía de " + SEDE_QX + ".",
         "Toda cirugía tiene riesgos, que te serán explicados en la valoración y constarán en el consentimiento informado que firmas antes de operarte.",
-        "Los resultados varían de una persona a otra. Los tiempos de recuperación publicados son una guía general, no una garantía.",
-    ]),
-    ("6. Reprogramación", [
-        "Puedes solicitar el cambio de tu fecha de cirugía avisando con anticipación. La nueva fecha depende de la disponibilidad de quirófano y del equipo quirúrgico.",
-    ]),
-    ("7. Tus datos personales", [
+    ], False),
+    ("8. Resultados", [
+        "La cirugía plástica es una obligación de medios, no de resultado: nuestros cirujanos ponen todo su conocimiento y cuidado, pero <strong>no es posible garantizar un resultado estético específico</strong>. Los resultados varían de una persona a otra.",
+        "Las fotos, descripciones y tiempos de recuperación publicados son una guía general, no una promesa ni una garantía.",
+        "Los retoques, revisiones o cirugías adicionales no están incluidos en el precio de la promoción, salvo que se indique expresamente por escrito.",
+        "La póliza de complicaciones cubre lo que indiquen sus propias condiciones, que te entregamos antes de la cirugía. No es un seguro de satisfacción con el resultado.",
+    ], False),
+    ("9. Pacientes que viajan", [
+        "Los tiquetes, el hospedaje, la alimentación y el transporte corren por tu cuenta y no hacen parte de la promoción.",
+        "Si tu cirugía se aplaza o no se realiza por razones médicas o por cualquiera de las situaciones de estos términos, no se reembolsan gastos de viaje. Por eso te recomendamos comprar tiquetes y hospedaje flexibles.",
+        "Solo puedes viajar de regreso cuando tu cirujano lo autorice en el control.",
+    ], False),
+    ("10. Tus datos personales", [
         "Los datos que compartes con nosotros se usan únicamente para contactarte y gestionar tu atención, conforme a la Ley 1581 de 2012 de protección de datos personales. Puedes pedir que los actualicemos o eliminemos escribiéndonos por nuestros canales de contacto.",
-    ]),
-    ("8. Contacto", [
-        "Si tienes dudas sobre estos términos, escríbenos por WhatsApp al " + TELEFONO + ".",
-    ]),
+    ], False),
+    ("11. Cambios en estos términos", [
+        "Podemos actualizar estos términos en cualquier momento. A cada paciente le aplican los términos que estaban publicados el día de su pago. Última actualización: " + TERMINOS_FECHA + ".",
+    ], False),
+    ("12. Contacto", [
+        "Si tienes dudas sobre estos términos, escríbenos por WhatsApp al " + TELEFONO + " <strong>antes</strong> de hacer cualquier pago. Con gusto te los explicamos.",
+    ], False),
 ]
 
 # Selector del inicio: (lo que la paciente quiere, slug recomendado, por qué)

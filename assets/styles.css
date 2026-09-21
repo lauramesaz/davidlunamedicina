@@ -872,3 +872,47 @@ h3 { font-weight: 500; }
   tr.total td { font-size: 15px; }
   tr.total td:first-child { background: #f1f1ee; font-size: 13px; }
 }
+
+/* v14 · términos y condiciones MUY visibles: único color del sitio (champaña), reservado solo para esto. El rojo NO le gustó a Laura: elegante, no alarma */
+:root { --tc: #e6d2a2; --tc-borde: #cdb67e; --tc-tinta: #7a6228; --tc-suave: #fbf7ec; }
+.btn.tc { background: var(--tc); border-color: var(--tc); color: #17130a; font-size: 16px; font-weight: 600; padding: 17px 28px; text-align: center; }
+.btn.tc:hover { border-color: var(--tc-borde); box-shadow: 0 12px 34px rgba(150, 120, 50, .3); }
+.tc-banda { padding: 50px 0 10px; }
+.tc-caja { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 32px 36px; border-radius: var(--r); background: var(--tc-suave); border: 1.5px solid var(--tc-borde); }
+.tc-caja h2 { font-size: clamp(24px, 3vw, 34px); margin: 6px 0 8px; color: #111; }
+.tc-caja p { margin: 0; font-size: 16.5px; color: #3d3d39; max-width: 640px; }
+.tc-caja .btn { flex: none; }
+.tc-ceja { font: 600 12.5px var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--tc-tinta); }
+.dos .tc-caja, .lado .tc-caja { flex-direction: column; align-items: flex-start; padding: 26px; }
+.dos .tc-caja h2 { font-size: 24px; }
+.tc-link { display: block; margin-top: 14px; padding: 13px 16px; border-radius: 16px; background: var(--tc-suave); border: 1.5px solid var(--tc-borde); color: #111; font-size: 14px; line-height: 1.45; text-decoration: none; }
+.tc-link b { color: #111; font-weight: 600; }
+.pie .btn.tc { display: inline-flex; margin-top: 36px; }
+.legal.grande { font-size: 15.5px; color: var(--texto); }
+.legal.grande a { color: var(--tc-tinta); font-weight: 600; }
+.legal.grande b { font-weight: 600; }
+/* página de términos: más grande y fácil de leer */
+.tc-resumen { padding: 36px; border-radius: var(--r); background: var(--tc-suave); border: 2px solid var(--tc); margin-bottom: 36px; }
+.tc-resumen h2 { font-size: clamp(30px, 4.4vw, 44px); margin: 8px 0 18px; }
+.tc-resumen ul { margin: 0 0 26px; padding-left: 22px; }
+.tc-resumen li { font-size: 19px; color: #222; margin-bottom: 10px; }
+.tc-indice { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.tc-indice a { padding: 10px 16px; border-radius: 999px; border: 1px solid var(--linea2); font-size: 14px; text-decoration: none; color: var(--texto); }
+.tc-indice a.clave { background: var(--tc); border-color: var(--tc); color: #17130a; font-weight: 600; }
+.terminos .termino { scroll-margin-top: 110px; }
+.terminos h3 { font-size: clamp(24px, 3vw, 30px); margin: 54px 0 16px; }
+.terminos p, .terminos li { font-size: 19px; line-height: 1.65; color: #3d3d39; }
+.terminos ul { padding-left: 24px; margin: 0 0 18px; }
+.terminos li { margin-bottom: 10px; }
+.terminos .clave { margin: 54px -28px 0; padding: 6px 28px 22px; border-radius: var(--r); background: var(--tc-suave); border: 1.5px solid var(--tc-borde); }
+.terminos .clave h3 { margin-top: 30px; color: #111; }
+.terminos .clave li::marker { color: var(--tc-borde); }
+@media (max-width: 720px) {
+  .tc-banda { padding: 36px 0 0; }
+  .tc-caja { flex-direction: column; align-items: flex-start; padding: 26px 22px; }
+  .tc-caja .btn, .tc-resumen .btn, .pie .btn.tc { width: 100%; }
+  .btn.tc { font-size: 15px; padding: 17px 14px; gap: 6px; }
+  .tc-resumen { padding: 26px 22px; }
+  .tc-resumen li, .terminos p, .terminos li { font-size: 17.5px; }
+  .terminos .clave { margin: 44px -10px 0; padding: 4px 16px 16px; }
+}

@@ -25,6 +25,12 @@ NAV = [
 ]
 
 
+def tc_aviso(titulo="Devoluciones: se retiene el %s" % RETENCION, texto=None):
+    """Aviso grande de términos y condiciones, con botón de color. Va en todas las páginas."""
+    texto = texto or "La cita de valoración no se devuelve. Si abonas y luego decides no operarte, se te devuelve lo abonado reteniendo el %s por gastos administrativos. Tu cirugía debe realizarse antes del %s." % (RETENCION, FECHA_LIMITE)
+    return '<div class="tc-caja"><div><span class="tc-ceja">Importante · léelo antes de pagar</span><h2>%s</h2><p>%s</p></div><a class="btn tc" href="terminos-y-condiciones.html">Leer términos y condiciones →</a></div>' % (titulo, texto)
+
+
 def pagina(archivo, titulo, descripcion, cuerpo, accion=None):
     """accion = (título, subtítulo, texto botón, enlace) para la barra fija inferior."""
     activo = lambda h: ' class="activo"' if h == archivo else ""
@@ -61,12 +67,14 @@ def pagina(archivo, titulo, descripcion, cuerpo, accion=None):
 <main>
 %(cuerpo)s
 </main>
+%(tc)s
 <footer class="pie"><div class="cont">
   <div class="cols">
     <div><a class="marca" href="index.html">%(marca)s</a><p class="bajada" style="font-size:15px;margin-top:14px;max-width:340px">Promos de cirugía plástica con un solo precio: lo que ves es lo que pagas.</p><a class="btn ch" style="display:inline-flex;margin-top:8px" href="%(wa)s" target="_blank" rel="noopener">WhatsApp %(tel)s</a></div>
     <div><h4>Cirugías</h4>%(pie_cx)s<a href="cirugias.html">Comparar promos</a></div>
-    <div><h4>Información</h4><a href="todo-incluido.html">Qué incluye tu precio</a><a href="formas-de-pago.html">Formas de pago</a><a href="otra-ciudad.html">Vienes de otra ciudad</a><a href="nosotros.html">Nosotros</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a><a href="terminos-y-condiciones.html">Términos y condiciones</a></div>
+    <div><h4>Información</h4><a href="todo-incluido.html">Qué incluye tu precio</a><a href="formas-de-pago.html">Formas de pago</a><a href="otra-ciudad.html">Vienes de otra ciudad</a><a href="nosotros.html">Nosotros</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></div>
   </div>
+  <a class="btn tc" href="terminos-y-condiciones.html">Términos y condiciones →</a>
   <p class="fin">La información de este sitio es orientativa y no reemplaza una consulta médica. Toda cirugía tiene riesgos y los resultados varían de una persona a otra.</p>
 </div></footer>
 %(barra)s
@@ -78,6 +86,7 @@ def pagina(archivo, titulo, descripcion, cuerpo, accion=None):
         "titulo": escape(titulo), "desc": escape(descripcion), "cuerpo": cuerpo, "nav": nav, "menu_cx": menu_cx, "v": V,
         "tabs": "".join('<a href="%s" class="%s"><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg>%s</a>' % (h, ("centro-tab" if h == "valoracion.html" else "activo" if (h == archivo or (h == "cirugias.html" and archivo[:-5] in CX)) else ""), ICONOS[i], t)
                         for h, i, t in [("index.html", "casa", "Inicio"), ("cirugias.html", "brillo", "Cirugías"), ("valoracion.html", "calendario", "Agendar"), ("todo-incluido.html", "lista", "Incluye"), ("preguntas-frecuentes.html", "duda", "Dudas")]),
+        "tc": "" if archivo in ("terminos-y-condiciones.html", "valoracion.html", "formas-de-pago.html") else '<section class="tc-banda"><div class="cont">%s</div></section>' % tc_aviso(),
         "marca": MARCA_HTML, "wa": wa(), "tel": TELEFONO, "barra": barra,
         "pie_cx": "".join('<a href="%s.html">%s</a>' % (c["slug"], c["nombre"]) for c in CIRUGIAS),
     }
@@ -332,7 +341,8 @@ for c in CIRUGIAS:
   <a class="btn pri" href="%s" target="_blank" rel="noopener">Quiero esta promo →</a>
   <a class="btn" href="valoracion.html?cx=%s">Agendar valoración</a>
   <p class="nota">✓ Precio cerrado · ✓ Póliza · ✓ Bomba de dolor<br>Primer paso: valoración de %s (no abonable).</p>
-</div></aside>""" % (c["precio"], SEDE_QX, len(c["incluye"]), VALORACION, wa(msj), c["slug"], VALORACION)
+  <a class="tc-link" href="terminos-y-condiciones.html"><b>Devoluciones con retención del %s.</b> Lee los términos y condiciones →</a>
+</div></aside>""" % (c["precio"], SEDE_QX, len(c["incluye"]), VALORACION, wa(msj), c["slug"], VALORACION, RETENCION)
     hermanas = ""
     if c["hermanas"]:
         hermanas = '<section class="sec pegada"><div class="cont">%s<div class="rejilla r2">%s</div></div></section>' % (
@@ -427,7 +437,7 @@ pagina("tu-proceso.html", "Tu proceso paso a paso", "De la cita de valoración a
          acordeon([f for f in FAQ if f[0] == "Dolor y recuperación"][:6]), cierre()))
 
 # ============================================================ FORMAS DE PAGO
-pagina("formas-de-pago.html", "Formas de pago", "Cómo se paga tu cirugía: cita de valoración, abono para separar fecha, saldo y condiciones de devolución.",
+pagina("formas-de-pago.html", "Formas de pago", "Cómo se paga tu cirugía: cita de valoración, abono para separar fecha, saldo y política de devoluciones.",
        hero_interna("Pagos", "Cuentas claras <em>desde el primer día</em>", "Así funciona el pago de tu cirugía, con las condiciones dichas de frente.", ["Formas de pago"]) + """
 <section class="sec pegada"><div class="cont">
   <div class="rejilla r3">
@@ -435,10 +445,10 @@ pagina("formas-de-pago.html", "Formas de pago", "Cómo se paga tu cirugía: cita
     <div class="tarjeta ver"><span class="num">02</span><h3>Abono para tu fecha</h3><p>Con un abono reservas tu fecha de cirugía en %s. Si desistes, se te devuelve con una retención del %s por gastos administrativos.</p></div>
     <div class="tarjeta ver"><span class="num">03</span><h3>Saldo</h3><p>El saldo se paga antes de la cirugía. El precio de tu promo se respeta desde que abonas.</p></div>
   </div>
-  <div class="aviso ver"><div><b>En resumen:</b> la valoración (%s) no se devuelve ni se abona. Del abono de la cirugía, si te arrepientes, se retiene el %s por gastos administrativos y se te devuelve el resto. Todo está en los <a href="terminos-y-condiciones.html">términos y condiciones</a>.</div></div>
+  <div class="ver" style="margin-top:28px">%s</div>
 </div></section>
 <section class="banda clara"><div class="cont dos"><div class="fija ver"><h2>Preguntas sobre <em>pagos</em></h2></div><div class="ver">%s</div></div></section>
-%s""" % (VALORACION, SEDE_QX, RETENCION, VALORACION, RETENCION,
+%s""" % (VALORACION, SEDE_QX, RETENCION, tc_aviso(),
          acordeon([f for f in FAQ if f[0] == "Pagos"] + [FAQ[2], FAQ[5]]),
          cierre("¿Quieres conocer los <em>medios de pago</em>?", preguntar=True, mensaje="Hola, quiero conocer los medios de pago de las promos de cirugía.")))
 
@@ -502,7 +512,7 @@ pagina("valoracion.html", "Agenda tu cita de valoración", "Todo empieza con tu 
   <div class="ver">
     <div class="valor"><small>Valor de la cita</small>%(val)s</div>
     <div style="margin-top:28px">%(lista)s</div>
-    <div class="aviso"><div><b>Importante:</b> el valor de la cita no es abonable al tratamiento y no se devuelve. <a href="terminos-y-condiciones.html">Ver términos y condiciones</a></div></div>
+    <div style="margin-top:24px">%(tc)s</div>
   </div>
   <form class="tarjeta ver" id="form-valoracion" data-wa="%(wa)s">
     <div class="progreso"><div class="on">1 · Escríbenos<br>(30 segundos)</div><div>2 · Tu valoración</div><div>3 · Tu fecha de cirugía</div></div>
@@ -512,23 +522,32 @@ pagina("valoracion.html", "Agenda tu cita de valoración", "Todo empieza con tu 
     <div class="campo"><label for="cirugia">Cirugía que te interesa</label><select id="cirugia" name="cirugia">%(op)s<option>Aún no estoy segura</option></select></div>
     <div class="campo"><label for="ciudad">Ciudad donde vives</label><input id="ciudad" name="ciudad" required autocomplete="address-level2"></div>
     <button class="btn pri" type="submit">Quiero mi valoración →</button>
-    <p class="legal">Al escribirnos aceptas nuestros <a href="terminos-y-condiciones.html">términos y condiciones</a>. Este formulario no guarda tus datos: solo arma tu mensaje.</p>
+    <p class="legal grande">Al escribirnos aceptas nuestros <a href="terminos-y-condiciones.html">términos y condiciones</a>.</p>
+    <p class="legal">Este formulario no guarda tus datos: solo arma tu mensaje.</p>
   </form>
 </div></section>
 """ % {"val": VALORACION, "wa": WHATSAPP, "op": opciones,
+       "tc": tc_aviso("La cita no se devuelve ni se abona", "El valor de la cita (%s) no se descuenta de la cirugía y no se devuelve en ningún caso." % VALORACION),
        "lista": lista_libre([("Consulta con nuestros cirujanos", "Examen, medidas y un plan pensado para tu cuerpo."), ("Respuestas honestas", "Qué se puede lograr, qué no, y si eres candidata."), ("Orden de exámenes", "Sales con lo que necesitas para dar el siguiente paso.")])})
 
 # ============================================================ TÉRMINOS
-bloques = "".join("<h3>%s</h3>%s" % (t, "".join("<p>%s</p>" % p for p in ps)) for t, ps in TERMINOS)
-pagina("terminos-y-condiciones.html", "Términos y condiciones", "Condiciones de la cita de valoración, abonos, devoluciones y promociones de cirugía.",
-       hero_interna("Legal", "Términos y <em>condiciones</em>", "Léelos antes de agendar o abonar. Están escritos para que se entiendan.", ["Términos y condiciones"]) + """
+def _contenido(ps):
+    return "".join("<ul>%s</ul>" % "".join("<li>%s</li>" % x for x in p) if isinstance(p, list) else "<p>%s</p>" % p for p in ps)
+
+bloques = "".join('<section id="t%d" class="termino%s"><h3>%s</h3>%s</section>' % (i + 1, " clave" if clave else "", t, _contenido(ps)) for i, (t, ps, clave) in enumerate(TERMINOS))
+indice = "".join('<a href="#t%d"%s>%s</a>' % (i + 1, ' class="clave"' if clave else "", t) for i, (t, ps, clave) in enumerate(TERMINOS))
+pagina("terminos-y-condiciones.html", "Términos y condiciones", "Condiciones de la cita de valoración, abonos, política de devoluciones, reprogramación y promociones de cirugía.",
+       hero_interna("Legal", "Términos y <em>condiciones</em>", "Léelos completos antes de agendar o pagar. Están escritos para que se entiendan.", ["Términos y condiciones"]) + """
 <section class="sec pegada"><div class="cont angosto">
-  <div class="rejilla r2 ver" style="margin-bottom:50px">
-    <div class="tarjeta"><span class="num">Cita de valoración</span><h3>%s · no se devuelve</h3><p>No es abonable al tratamiento y su valor no se reembolsa.</p></div>
-    <div class="tarjeta"><span class="num">Abono de cirugía</span><h3>Retención del %s</h3><p>Si desistes, se retiene ese porcentaje del abono por gastos administrativos.</p></div>
+  <div class="tc-resumen ver">
+    <span class="tc-ceja">Lo más importante</span>
+    <h2>Devoluciones y fecha límite</h2>
+    <ul>%s</ul>
+    <a class="btn tc" href="#t4">Ver la política completa ↓</a>
   </div>
-  <div class="prosa ver">%s</div>
+  <nav class="tc-indice ver" aria-label="Contenido de los términos">%s</nav>
+  <div class="prosa terminos">%s</div>
 </div></section>
-""" % (VALORACION, RETENCION, bloques))
+""" % ("".join("<li>%s</li>" % x for x in RESUMEN_TC), indice, bloques))
 
 print("\nListo. %d preguntas frecuentes, %d cirugías." % (len(FAQ), len(CIRUGIAS)))

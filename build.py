@@ -75,7 +75,7 @@ def pagina(archivo, titulo, descripcion, cuerpo, accion=None):
     <div><h4>Información</h4><a href="todo-incluido.html">Qué incluye tu precio</a><a href="formas-de-pago.html">Formas de pago</a><a href="otra-ciudad.html">Vienes de otra ciudad</a><a href="nosotros.html">Nosotros</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></div>
   </div>
   <a class="btn tc" href="terminos-y-condiciones.html">Términos y condiciones →</a>
-  <p class="fin">La información de este sitio es orientativa y no reemplaza una consulta médica. Toda cirugía tiene riesgos y los resultados varían de una persona a otra.</p>
+  <p class="fin">La información de este sitio es orientativa y no reemplaza una consulta médica. Toda cirugía tiene riesgos y los resultados varían de una persona a otra.<span style="display:block;margin-top:10px">Web y SEO: <a href="https://posicion-seo.com/" style="text-decoration:none">Visibla</a></span></p>
 </div></footer>
 %(barra)s
 <nav class="tabs" aria-label="Navegación rápida">%(tabs)s</nav>

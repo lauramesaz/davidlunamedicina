@@ -72,7 +72,7 @@ def pagina(archivo, titulo, descripcion, cuerpo, accion=None):
   <div class="cols">
     <div><a class="marca" href="index.html">%(marca)s</a><p class="bajada" style="font-size:15px;margin-top:14px;max-width:340px">Promos de cirugía plástica con un solo precio: lo que ves es lo que pagas.</p><a class="btn ch" style="display:inline-flex;margin-top:8px" href="%(wa)s" target="_blank" rel="noopener">WhatsApp %(tel)s</a></div>
     <div><h4>Cirugías</h4>%(pie_cx)s<a href="cirugias.html">Comparar promos</a></div>
-    <div><h4>Información</h4><a href="todo-incluido.html">Qué incluye tu precio</a><a href="formas-de-pago.html">Formas de pago</a><a href="otra-ciudad.html">Vienes de otra ciudad</a><a href="nosotros.html">Nosotros</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></div>
+    <div><h4>Información</h4><a href="todo-incluido.html">Qué incluye tu precio</a><a href="formas-de-pago.html">Formas de pago</a><a href="otra-ciudad.html">Vienes de otra ciudad</a><a href="nosotros.html">Nosotros</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a><a href="https://noon.clinic/">noon Clinic, clínica aliada en Medellín</a></div>
   </div>
   <a class="btn tc" href="terminos-y-condiciones.html">Términos y condiciones →</a>
   <p class="fin">La información de este sitio es orientativa y no reemplaza una consulta médica. Toda cirugía tiene riesgos y los resultados varían de una persona a otra.<span style="display:block;margin-top:10px">Web y SEO: <a href="https://posicion-seo.com/" style="text-decoration:none">Visibla</a></span></p>

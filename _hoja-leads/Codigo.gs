@@ -28,9 +28,27 @@ const TEXTOS = {
 const COLORES = { A: '#d9ead3', B: '#fff2cc', C: '#efefef' };
 const ETIQUETAS = { A: '🟢 A · caliente', B: '🟡 B · tibio', C: '⚪ C · frío' };
 
+// Sirve pegado dentro de una hoja (Extensiones → Apps Script) o como proyecto suelto (script.new):
+// si es suelto, la primera vez crea la hoja "Leads · landings de cirugía" en tu Drive.
+function libro_() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('HOJA_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  let libro = null;
+  try { libro = SpreadsheetApp.getActiveSpreadsheet(); } catch (e) {}
+  if (!libro) libro = SpreadsheetApp.create('Leads · landings de cirugía');
+  props.setProperty('HOJA_ID', libro.getId());
+  return libro;
+}
+
 function hoja_() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
-  return libro.getSheetByName(PESTANA) || libro.insertSheet(PESTANA);
+  const libro = libro_();
+  let h = libro.getSheetByName(PESTANA);
+  if (!h) {
+    const vacia = libro.getSheets().length === 1 && libro.getSheets()[0].getLastRow() === 0 ? libro.getSheets()[0] : null;
+    h = vacia ? vacia.setName(PESTANA) : libro.insertSheet(PESTANA);
+  }
+  return h;
 }
 
 function preparar() {
@@ -39,6 +57,7 @@ function preparar() {
     .setFontWeight('bold').setBackground('#111111').setFontColor('#ffffff');
   h.setFrozenRows(1);
   h.setColumnWidths(1, COLUMNAS.length, 150);
+  Logger.log('Hoja lista: ' + libro_().getUrl());
 }
 
 function doPost(e) {

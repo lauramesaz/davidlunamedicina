@@ -34,7 +34,7 @@ PIXEL_ID = "583112267661780"
 
 # Dirección de la "aplicación web" de Google Apps Script que escribe en la hoja de leads.
 # Vacío = el formulario funciona igual, pero no guarda en la hoja (solo para pruebas).
-HOJA_URL = ""
+HOJA_URL = "https://script.google.com/macros/s/AKfycbw62orFn_SE9KxJdIBJ8PTxKF0DZRORnPqm3TvLP9xbRRKgu7FAAhZxSXX7txP6kuJihw/exec"
 
 # Las 3 preguntas. Cada opción: (código, texto). El código es lo que se guarda en la hoja.
 P1 = ("¿Para cuándo te gustaría <em>operarte</em>?", [

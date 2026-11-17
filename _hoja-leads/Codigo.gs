@@ -57,6 +57,7 @@ function preparar() {
     .setFontWeight('bold').setBackground('#111111').setFontColor('#ffffff');
   h.setFrozenRows(1);
   h.setColumnWidths(1, COLUMNAS.length, 150);
+  borrarPruebas();
   Logger.log('Hoja lista: ' + libro_().getUrl());
 }
 
@@ -91,4 +92,14 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+// Borra las filas de prueba (ID que empieza por "prueba-").
+function borrarPruebas() {
+  const h = hoja_();
+  const n = h.getLastRow();
+  if (n < 2) return;
+  const ids = h.getRange(2, COLUMNAS.length, n - 1, 1).getValues().flat();
+  for (let i = ids.length - 1; i >= 0; i--) if (String(ids[i]).indexOf('prueba-') === 0) h.deleteRow(i + 2);
+  Logger.log('Filas de prueba borradas');
 }
